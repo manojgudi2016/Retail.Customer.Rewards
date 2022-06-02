@@ -1,14 +1,22 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Retail.Customer.Rewards.Data.Entities;
+using Retail.Customer.Rewards.Services.Interface;
 
 namespace Retail.Customer.Rewards.Api.Controllers
 {
     public class TransactionsController : Controller
     {
+
+        private readonly ITransactionService transactionService;
+        public TransactionsController(ITransactionService _transactionService)
+        {
+            transactionService = _transactionService;
+        }
         // GET: TransactionsController
         public ActionResult Index()
         {
@@ -22,8 +30,13 @@ namespace Retail.Customer.Rewards.Api.Controllers
         }
 
         // GET: TransactionsController/Create
-        public ActionResult Create()
+        //Ideally the Data entity should not be used in the presentation layer.
+        //Instead a DTO should be used and the DTO should have a mapping using Automapper.
+
+        //Use postman and create transactions, ensure the customers and products are used from the existing table.
+        public ActionResult Create(Transaction transaction)
         {
+            transactionService.CreateTransaction(transaction);
             return View();
         }
 
